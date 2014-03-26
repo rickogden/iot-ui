@@ -1,7 +1,21 @@
 <div>
     <form>
-        <input type="number" min="0" max="100">
-        <label><input type="checkbox" name="wheechair_access" > Wheelchair Access</label>
+        <label><input type="checkbox" ng-change="refresh()" name="wheechair_access" ng-model="form.wheelchair_access"
+                      ng-true-value="(yes|limited)"> Wheelchair Access</label>
+        <label><input type="checkbox" ng-change="refresh()" name="food" ng-model="form.food" ng-true-value="yes"> Serves
+            food</label>
+        <label><input type="checkbox" ng-change="refresh()" name="outside_seating" ng-model="form.outside_seating"
+                      ng-true-value="yes"> Has outside seating.</label>
     </form>
-    <leaflet center="amsterdam" height="400px" markers="markers"></leaflet>
+    <leaflet center="amsterdam" height="400px" markers="markers" event-broadcast="events"></leaflet>
+    <ul>
+        <li ng-repeat="pub in pubs" data-osm="{{pub.id}}">
+            <article>
+                <h3>{{pub.name}}
+                    <small>{{pub.distance | number:0}}m</small>
+                </h3>
+                <p>{{pub.description}}</p>
+            </article>
+        </li>
+    </ul>
 </div>

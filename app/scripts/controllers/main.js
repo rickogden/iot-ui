@@ -1,16 +1,7 @@
 'use strict';
 
 angular.module('iotUiApp')
-  .controller('MainCtrl', function ($scope, $http) {
-
-        angular.extend($scope, {
-            amsterdam: {
-                lat: 52.36952057466904,
-                lng: 4.90363597869873,
-                zoom: 14
-            },
-            markers: {}
-        });
+    .controller('MainCtrl', ['$scope', '$http', 'Pubs', function ($scope, $http, Pubs) {
         var osmData = function(data) {
 
             var mks = {};
@@ -23,10 +14,49 @@ angular.module('iotUiApp')
                     draggable: false
                 };
             });
-            angular.extend($scope, {markers: mks});
+            angular.extend($scope, {markers: mks, pubs: data});
 
-            console.log($scope);
         };
-        $http.get('http://ricklab.net/iot/pubs?l='+$scope.amsterdam.lng+','+$scope.amsterdam.lat+'&limit=100').success(osmData);
 
-  });
+
+        $scope.refresh = function () {
+            var params = {};
+            angular.forEach($scope.form, function (el, key) {
+                if (el !== false) {
+                    params[key] = el;
+                }
+            })
+            params.l = $scope.amsterdam.lng + ',' + $scope.amsterdam.lat;
+            Pubs.query(params, osmData);
+        }
+
+        $scope.$on('leafletDirectiveMap.moveend', function (e) {
+
+            $scope.refresh();
+        });
+
+        angular.extend($scope, {
+            amsterdam: {
+                lat: 52.36952057466904,
+                lng: 4.90363597869873,
+                zoom: 16
+            },
+            markers: {},
+            pubs: [],
+            form: {},
+            events: {
+                map: {
+                    enable: ['moveend'],
+                    logic: 'emit'
+                }
+            }
+        });
+
+        var qs = {
+            l: $scope.amsterdam.lng + ',' + $scope.amsterdam.lat,
+            limit: 20
+        }
+
+        $scope.refresh();
+
+    }]);
