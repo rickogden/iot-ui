@@ -1,21 +1,21 @@
 <div>
-    <form>
-        <label><input type="checkbox" ng-change="refresh()" name="wheechair" ng-model="form.wheelchair"
+    <form class="form-inline" role="form">
+        <div class="form-group">
+            <h4>Filters:</h4>
+            <label><input type="checkbox" ng-change="refresh()" name="wheechair" ng-model="form.wheelchair"
                       ng-true-value="(yes|limited)"> Wheelchair Access</label>
         <label><input type="checkbox" ng-change="refresh()" name="food" ng-model="form.food" ng-true-value="yes"> Serves
             food</label>
         <label><input type="checkbox" ng-change="refresh()" name="outside_seating" ng-model="form.outside_seating"
-                      ng-true-value="yes"> Has outside seating.</label>
+                      ng-true-value="yes"> Has outside seating.</label></div>
     </form>
-    <leaflet center="amsterdam" height="400px" markers="markers" event-broadcast="events"></leaflet>
-    <ul>
-        <li ng-repeat="pub in pubs" data-osm="{{pub.id}}">
-            <article>
-                <h3>{{pub.name}}
+    <leaflet center="amsterdam" height="300px" markers="markers" event-broadcast="events"></leaflet>
+    <ul class="list-group">
+        <a href="" class="list-group-item" ng-repeat="pub in pubs" data-osm="{{pub.id}}" ng-click="selectPub(pub.id)">
+            <h4 class="list-group-item-heading">{{pub.name}}
                     <small>{{pub.distance | number:0}}m</small>
-                </h3>
-                <p>{{pub.description}}</p>
-            </article>
-        </li>
+            </h4>
+            <p class="list-group-item-text">{{pub.description}}</p>
+        </a>
     </ul>
 </div>

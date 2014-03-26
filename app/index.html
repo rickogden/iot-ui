@@ -26,7 +26,22 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div class="container" ng-view=""></div>
+    <div class="container">
+        <header class="page-header">
+            <h1>Internet of Things IP
+                <small>Amsterdam, March 2014</small>
+            </h1>
+        </header>
+        <div class="main-view" ng-view=""></div>
+        <footer class="page-footer">
+            <p>Created by <a href="http://www.rickogden.com/">Rick Ogden</a> for the Internet of Things Intensive
+                Programme of Study using <a href="http://www.angularjs.com">AngularJS</a>.
+                Data from <a href="http://www.openstreetmap.org">OpenStreetMap</a>.
+                Project source available from <a href="http://www.github.com/rickogden/iot-ui">Github</a>.
+                Backend API uses <a href="http://silex.sensiolabs.org">Silex</a> and <a href="http://mongodb.org">MongoDB</a>.
+            </p>
+        </footer>
+    </div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>

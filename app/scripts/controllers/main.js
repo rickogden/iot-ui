@@ -30,7 +30,7 @@ angular.module('iotUiApp')
             Pubs.query(params, osmData);
         }
 
-        $scope.$on('leafletDirectiveMap.moveend', function (e) {
+        $scope.$on('leafletDirectiveMap.dragend', function (e) {
 
             $scope.refresh();
         });
@@ -42,11 +42,17 @@ angular.module('iotUiApp')
                 zoom: 16
             },
             markers: {},
+            selectPub: function (pubId) {
+                var marker = $scope.markers[pubId];
+                $scope.amsterdam.lat = marker.lat;
+                $scope.amsterdam.lng = marker.lng;
+                marker.focus = true;
+            },
             pubs: [],
             form: {},
             events: {
                 map: {
-                    enable: ['moveend'],
+                    enable: ['dragend', 'dragstart'],
                     logic: 'emit'
                 }
             }
@@ -58,5 +64,21 @@ angular.module('iotUiApp')
         }
 
         $scope.refresh();
+
+        if ("geolocation" in navigator) {
+            var watchId = navigator.geolocation.watchPosition(function (pos) {
+                $scope.amsterdam.lat = pos.coords.latitude;
+                $scope.amsterdam.lng = pos.coords.longitude;
+                $scope.refresh();
+            }, null, {enableHighAccuracy: true});
+        }
+
+        $scope.$on('leafletDirectiveMap.dragstart', function (e) {
+            if (watchId) {
+                navigator.geolocation.clearWatch(watchId);
+            }
+        });
+
+
 
     }]);
